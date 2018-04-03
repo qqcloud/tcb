@@ -1,1 +1,3 @@
-routehub.js
+module.exports = router => {
+	router.get('/', require('./page/index'));
+};
