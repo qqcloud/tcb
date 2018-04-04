@@ -16,9 +16,9 @@ app.use(bodyparser({
 }))
 app.use(json())
 app.use(logger())
-app.use(require('koa-static')(__dirname + '/public'))
+app.use(require('koa-static')(SERVER_ROOT_PATH + '/public'))
 
-app.use(views(path.join(__dirname, './app/views'), { extension: 'ejs' }));
+app.use(views(path.join(SERVER_ROOT_PATH, 'app/views'), { extension: 'ejs' }));
 
 // logger
 app.use(async (ctx, next) => {

@@ -1,11 +1,17 @@
 const PageCgiBase = require('../../pagecgibase');
 
-class HomePage extends PageCgiBase{
+class HomePage extends PageCgiBase {
 
-	async onIndex (){
+	async onIndex() {
 		const {ctx} = this;
-		await ctx.render('./home/index');
-		return;
+		await ctx.render('home/index', {
+			title: 29489284
+		});
+	}
+
+	async onTest() {
+		const {ctx} = this;
+		ctx.body = 'test';
 	}
 }
 

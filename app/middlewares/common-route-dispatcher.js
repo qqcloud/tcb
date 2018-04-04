@@ -21,7 +21,7 @@ _.map(routes, (route, subPath) => {
 	}
 
 	// route register--`routePath + router.routes()`
-	routeDispatcher.all(routePath, router.routes(), router.allowedMethods());
+	routeDispatcher.use(routePath, router.routes(), router.allowedMethods());
 });
 
 module.exports = routeDispatcher;

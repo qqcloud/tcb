@@ -8,19 +8,19 @@ class PageCgiBase extends CgiBase {
 	/**
 	 * 子类实现该方法处理请求
 	 */
-	handle() {
+	async handle() {
 		const {ctx, next} = this;
-		const {request, response} = ctx;
-		let action = request.action || 'Index';
+		let {action} = ctx.params;
+		action = action || 'index';
 		action = action.replace(/^./, action[0].toUpperCase());
 		const actionHandler = `on${action}`;
 		if(typeof this[actionHandler] === 'function'){
 
 		} else {
-			return;
+			ctx.body = 'error';
 		}
 
-		this[actionHandler]();
+		await this[actionHandler]();
 	}
 }
 
