@@ -4,10 +4,10 @@
   "private": true,
   "scripts": {
     "start": "pm2 start app.js",
-    "local": "npm start --env=local",
+    "local": "node ./bin/startup.js --env=local",
     "dev": "npm start --env=dev",
     "prd": "npm start --env=prd",
-    "test": "npm start --env=test",
+    "test": "npm start --env=test"
   },
   "dependencies": {
     "debug": "^2.6.3",
@@ -19,7 +19,9 @@
     "koa-router": "^7.1.1",
     "koa-static": "^3.0.0",
     "koa-views": "^5.2.1",
+    "lodash": "^4.17.5",
     "minimist": "^1.2.0",
+    "ejs": "^2.4.1"
   },
   "devDependencies": {
     "nodemon": "^1.8.1"

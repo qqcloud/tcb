@@ -7,7 +7,6 @@ const lanInterfaceName = 'eth0'; // 监听指定的网卡，注意本选项只�
 const server = require('./server')(ENV, lanInterfaceName);
 
 const getCurrentConfig = function() {
-
 	return Object.assign(
 		require('./config.default'),
 		require(`./config.${ENV}`), {
