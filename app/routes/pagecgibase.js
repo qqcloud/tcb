@@ -6,21 +6,24 @@ class PageCgiBase extends CgiBase {
 	}
 
 	/**
-	 * 子类实现该方法处理请求
+	 * handle route of page
 	 */
 	async handle() {
-		const {ctx, next} = this;
-		let {action} = ctx.params;
-		action = action || 'index';
+		const {ctx,next} = this;
+
+		let action = ctx.params.action || 'index';
 		action = action.replace(/^./, action[0].toUpperCase());
 		const actionHandler = `on${action}`;
-		if(typeof this[actionHandler] === 'function'){
 
+		if (typeof this[actionHandler] === 'function') {
+			try {
+				await this[actionHandler]();
+			} catch (e) {
+				await ctx.render('50x');
+			}
 		} else {
-			ctx.body = 'error';
+			await ctx.render('404');
 		}
-
-		await this[actionHandler]();
 	}
 }
 

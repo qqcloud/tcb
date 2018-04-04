@@ -5,7 +5,7 @@ class CgiBase {
 	}
 
 	/**
-	 * 静态工厂方法：创建用以响应路由的回调函数
+	 * static function：make route handler
 	 * @return {Function}
 	 */
 	static makeRouteHandler() {
@@ -13,7 +13,7 @@ class CgiBase {
 	}
 
 	/**
-	 * 子类实现该方法处理请求
+	 * child class should define this method.
 	 */
 	handle() {
 		throw new Error(`Please implement instance method \`${this.constructor.name}::handle\`.`);
