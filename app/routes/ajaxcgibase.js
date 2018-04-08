@@ -1,17 +1,30 @@
+const CgiBase = require('./cgibase');
 
-
-module.exports = function(ctx, next) {
-	const {request, response} = ctx;
-
-	let action = request.action || 'Index';
-	action = action.replace(/^./, action[0].toUpperCase());
-	const actionHandler = `on${action}`;
-	
-	if(typeof this[actionHandler] === 'function'){
-
-	} else {
-		return;
+class AjaxCgiBase extends CgiBase {
+	constructor() {
+		super(...arguments);
 	}
 
-	this[actionHandler](ctx, next);
-};
+	/**
+	 * handle route of page
+	 */
+	async handle() {
+		const {ctx,next} = this;
+
+		let action = ctx.params.action || 'index';
+		action = action.replace(/^./, action[0].toUpperCase());
+		const actionHandler = `on${action}`;
+
+		if (typeof this[actionHandler] === 'function') {
+			try {
+				await this[actionHandler]();
+			} catch (e) {
+				await ctx.body('50x');
+			}
+		} else {
+			await ctx.body('404');
+		}
+	}
+}
+
+module.exports = AjaxCgiBase;

@@ -5,5 +5,5 @@
  */
 
 module.exports = {
-	'/home': 'home/routehub',
+	'/home': 'home/route',
 };

@@ -3,7 +3,7 @@
  */
 const path = require('path');
 const config = require('../../config/index');
-const routes = require('../routes/registry');
+const routes = require('../routes/index');
 const Router = require('koa-router');
 const routeDispatcher = new Router();
 
