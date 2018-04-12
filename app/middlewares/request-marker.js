@@ -1,5 +1,5 @@
 /**
- * mark request
+ * Request Marker
  */
 const uuid = require('uuid');
 const importantUrlLog = require('../config/importanturllog');
@@ -18,8 +18,9 @@ module.exports = (ctx, next) => {
 
 	for(var url in importantUrl){
 		isImportant = importantUrl[url];
-		if(isImportant && reqUrl.indexOf(url) != -1) {
-			request.seqId = seqId ? seqId + marker : '';
+		if(isImportant && reqUrl.indexOf(url) !== -1) {
+			// 37位字符串-'f64f2940-fae4-11e7-8c5f-ef356f279131*'
+			request.reqSeqId = request.reqSeqId + marker; 
 			break;
 		}
 	}

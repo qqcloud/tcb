@@ -1,7 +1,7 @@
 /**
  * Request Logger
  */
-module.exports = (ctx, next) => {
+module.exports = async (ctx, next) => {
 	const { request } = ctx;
 	const method = request.method.toUpperCase();
 	
@@ -16,5 +16,5 @@ module.exports = (ctx, next) => {
 	});
 
 	// logger.info('[request] =>', requestInfo);
-	next();
+	await next();
 };
