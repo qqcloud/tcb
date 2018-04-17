@@ -1,10 +1,11 @@
 const { createLogger, format, transports } = require('winston');
 
 module.exports = config => {
+	const { normal } = config.log;
 	return createLogger({
-		level: config.log.level,
+		level: normal.level,
 		format: format.combine(
-			require('./helper/formatter'),
+			require('../helper/formatter'),
 		),
 		transports: [new transports.Console()]
 	});

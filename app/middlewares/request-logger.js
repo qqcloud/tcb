@@ -12,9 +12,9 @@ module.exports = async (ctx, next) => {
 		// for view post data
 		'body': method === 'POST' ? request.body : void(0),
 		// for trace request
-		'reqSeqId': request.reqSeqId,
+		'reqSeqId': request.$reqSeqId,
 	});
 
-	// logger.info('[request] =>', requestInfo);
+	Logger.info('[request] =>', requestInfo);
 	await next();
 };

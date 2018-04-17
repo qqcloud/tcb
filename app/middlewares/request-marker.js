@@ -2,28 +2,39 @@
  * Request Marker
  */
 const uuid = require('uuid');
-const importantUrlLog = require('../config/importanturllog');
+const config = require('../../config');
+const { important } = config.log;
 
-module.exports = (ctx, next) => {
+module.exports = async (ctx, next) => {
 
 	const { request } = ctx;
 	// 36位字符串-'f64f2940-fae4-11e7-8c5f-ef356f279131'
-	request.reqSeqId = request.query.reqSeqId || uuid.v1(); 
+	request.$reqSeqId = request.query.reqSeqId || uuid.v1();
+	const originalUrl = request.originalUrl;
 
-	const importantUrl = importantUrlLog.url;
-	const marker = importantUrlLog.marker;
-	const seqId = request.reqSeqId; 
-	const reqUrl = request.url;
-	let isImportant;
+	// 标记 jsonp ajax render
+	let cgiType;
+	if(/\/ajax\//g.test(originalUrl)) {
+		cgiType = 'ajax';
+	} else {
+		cgiType = 'page';
+	}
+	request.$cgiType = cgiType;
 
-	for(var url in importantUrl){
-		isImportant = importantUrl[url];
-		if(isImportant && reqUrl.indexOf(url) !== -1) {
+	// mark important log
+	if(important && important.on) {
+		const { marker } = important;
+		const importantUrl = require('../config/importanturl');
+		
+		const isImportant = _.some(importantUrl, function(isOn, url){
+			return isOn && originalUrl.indexOf(url) !== -1;
+		});
+
+		if(isImportant) {
 			// 37位字符串-'f64f2940-fae4-11e7-8c5f-ef356f279131*'
-			request.reqSeqId = request.reqSeqId + marker; 
-			break;
+			request.$reqSeqId = request.$reqSeqId + marker;
 		}
 	}
 	
-	next();
+	await next();
 };

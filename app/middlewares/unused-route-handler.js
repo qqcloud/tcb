@@ -1,16 +1,15 @@
 /**
  * 处理未被使用（未命中）的路由
  */
+const utilLib = require('../libs/utillib');
 
 module.exports = async (ctx, next) => {
 	const {request, response} = ctx;
-	const originUrl = request.originUrl;
+	const {$cgiType} = request;
 
-	ctx.status = 404;
-
-	if(/\/ajax\//.test(originUrl)){
+	if($cgiType === 'ajax'){
 
 	} else {
-		await ctx.render('404');
+		await utilLib.render404(ctx);
 	}
 };

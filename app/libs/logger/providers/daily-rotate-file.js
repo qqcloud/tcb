@@ -3,38 +3,41 @@ const DailyRotateFile = require('winston-daily-rotate-file');
 const { createLogger, format } = winston;
 
 module.exports = config => {
-
+	const { normal, important } = config.log;
 	const transports = (() => {
 
 		const results = [
 			new DailyRotateFile({
-				level: config.log.level,
-				dirname: config.log.path,
-				filename: `${config.log.prefix}-%DATE%.log`,
-				datePattern: config.log.datePattern,
+				level: normal.level,
+				dirname: normal.path,
+				filename: `${normal.prefix}-%DATE%.log`,
+				datePattern: normal.datePattern,
 				//maxSize: '20m',
-				maxFiles: config.log.maxDays,
+				maxFiles: normal.maxDays,
 
 				format: format.combine(
-					require('./helper/formatter'),
+					require('../helper/formatter'),
 				),
 			}),
 		];
 
-		if (config.log.markImportant) {
-			const importantUrlLog = require('../../config/importanturllog');
-			const ignoreNotImportant = require('./helper/ignore-not-important')(importantUrlLog);
+		if (important && important.on) {
+
+			const tempImportant = Object.assign({}, normal, important);
+			const importantUrl = require('../../config/importanturl');
+			const ignoreNotImportant = require('../helper/ignore-not-important')(importantUrlLog);
+			
 			results.push(new DailyRotateFile({
-				level: importantUrlLog.logLevel,
-				dirname: importantUrlLog.logPath,
-				filename: `${importantUrlLog.logPrefix}-%DATE%.log`,
-				datePattern: importantUrlLog.datePattern,
+				level: tempImportant.evel,
+				dirname: tempImportant.path,
+				filename: `${tempImportant.prefix}-%DATE%.log`,
+				datePattern: tempImportant.datePattern,
 				//maxSize: '20m',
-				maxFiles: importantUrlLog.maxDays,
+				maxFiles: tempImportant.maxDays,
 
 				format: format.combine(
 					ignoreNotImportant(),
-					require('./helper/formatter'),
+					require('../helper/formatter'),
 				),
 			}));
 		}

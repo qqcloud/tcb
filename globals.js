@@ -4,7 +4,7 @@
 
 global.SERVER_ROOT_PATH = __dirname; // server root directory
 global._ = require('lodash');
-global.logger = require('./app/libs/logger');
+global.Logger = require('./app/libs/logger');
 
 Object.defineProperty(global, '__stack', {
 	get() {
@@ -17,3 +17,5 @@ Object.defineProperty(global, '__stack', {
 		return stack;
 	},
 });
+
+global.ERROR = require('./app/libs/error');

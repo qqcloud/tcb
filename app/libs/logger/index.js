@@ -1,4 +1,4 @@
-const config = require('../../config/index');
+const config = require('../../../config');
 
 module.exports = (() => {
 	if (config.env === 'local') {

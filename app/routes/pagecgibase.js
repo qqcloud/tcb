@@ -1,4 +1,5 @@
 const CgiBase = require('./cgibase');
+const utilLib = require('../libs/utillib');
 
 class PageCgiBase extends CgiBase {
 	constructor() {
@@ -9,20 +10,32 @@ class PageCgiBase extends CgiBase {
 	 * handle route of page
 	 */
 	async handle() {
-		const {ctx,next} = this;
-
+		const { ctx, next } = this;
+		const { request } = ctx;
 		let action = ctx.params.action || 'index';
 		action = action.replace(/^./, action[0].toUpperCase());
 		const actionHandler = `on${action}`;
 
 		if (typeof this[actionHandler] === 'function') {
 			try {
+				Logger.debug(JSON.stringify({
+					detail: '[render page] =>' + ctx.originalUrl,
+					seqReqId: request.$reqSeqId,
+				}));
 				await this[actionHandler]();
 			} catch (e) {
-				await ctx.render('50x');
+				Logger.error(JSON.stringify({
+					detail: '[render page 50x] =>' + ctx.originalUrl,
+					seqReqId: request.$reqSeqId,
+				}));
+				await utilLib.render50X(ctx);
 			}
 		} else {
-			await ctx.render('404');
+			Logger.error(JSON.stringify({
+				detail: '[render page 404] =>' + ctx.originalUrl,
+				seqReqId: request.$reqSeqId,
+			}));
+			await utilLib.render404(ctx);
 		}
 	}
 }

@@ -1,3 +1,5 @@
+const service = require('../service');
+
 class CgiBase {
 	constructor(ctx, next) {
 
@@ -10,6 +12,13 @@ class CgiBase {
 	 */
 	static makeRouteHandler() {
 		return (ctx, next) => new this(ctx, next).handle();
+	}
+
+	/**
+	 * inject `service instances`
+	 */
+	injectServices() {
+		Object.assign(this, service(this.ctx));
 	}
 
 	/**

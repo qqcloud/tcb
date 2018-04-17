@@ -20,6 +20,8 @@ app.use(require('koa-static')(SERVER_ROOT_PATH + '/public'))
 
 app.use(views(path.join(SERVER_ROOT_PATH, 'app/views'), { extension: 'ejs' }));
 
+app.use(require('./app/middlewares/request-marker'));
+
 // logger
 app.use(async (ctx, next) => {
   const start = new Date()

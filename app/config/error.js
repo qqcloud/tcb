@@ -1,0 +1,6 @@
+/**
+ * error config
+ */
+module.exports = {
+	
+};
