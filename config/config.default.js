@@ -13,7 +13,8 @@ module.exports = {
 	'serviceTimeout': 20 * 1000,
 	// node server超时时间(ms)
 	'serverTimeout': 25 * 1000,
-
+	// jsonp function name
+	'jsonp': 'jsonpCallback',
 	'log': {
 		'normal': {
 			'level': 'debug', // 可选值: debug, info, warn, error

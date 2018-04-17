@@ -11,12 +11,18 @@ module.exports = async (err, ctx) => {
 		return;
 	}
 
-	const { $cgiType } = request;
-	Logger.error('[internal err] =>', err);
-	if($cgiType === 'ajax') {
-		// ajax 返回
-		ctx.status = 500;
-		ctx.body = 'err';
+	const { $cgiType: cgiType } = request;
+	Logger.error({
+		detail: err,
+		reqSeqId: request.$reqSeqId,
+	});
+	if(cgiType === 'ajax' || cgiType === 'jsonp') {
+		
+		const error = ERROR.create('SERVER_RESPONSE_ERROR', {
+			'msg': 'Server ${msg}',
+			'detail': { err: message },
+		});
+		utilLib.resJson(error, ctx);
 	} else {
 		await utilLib.render50X(ctx);
 	}

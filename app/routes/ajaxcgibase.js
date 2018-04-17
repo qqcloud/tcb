@@ -1,4 +1,5 @@
 const CgiBase = require('./cgibase');
+const utilLib = require('../libs/utillib');
 
 class AjaxCgiBase extends CgiBase {
 	constructor() {
@@ -20,16 +21,24 @@ class AjaxCgiBase extends CgiBase {
 		if (typeof this[actionHandler] === 'function') {
 			try {
 				await this[actionHandler]();
-			} catch (e) {
+			} catch (err) {
 				Logger.error(JSON.stringify({
-					detail: e,
+					detail: err,
 					seqReqId: request.$reqSeqId,
 				}));
-				await utilLib.render50X(ctx);
+				this.send(err);
 			}
 		} else {
-			
+			this.send(ERROR.create('404', {
+				'msg': 'Server cgi: ${msg}',
+				'detail': { err: message },
+			}));
 		}
+	}
+
+	send(data){
+		const { ctx } = this;
+		utilLib.resJson(data, ctx);
 	}
 }
 

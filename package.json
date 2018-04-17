@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "pm2 start app.js",
-    "local": "node ./bin/startup.js --env=local",
+    "local": "nodemon ./bin/startup.js --env=local",
     "dev": "npm start --env=dev",
     "prd": "npm start --env=prd",
     "test": "npm start --env=test"
@@ -28,6 +28,6 @@
     "winston-daily-rotate-file": "^3.0.1"
   },
   "devDependencies": {
-    "nodemon": "^1.8.1"
+    "nodemon": "^1.17.3"
   }
 }

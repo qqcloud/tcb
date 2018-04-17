@@ -15,7 +15,12 @@ module.exports = async (ctx, next) => {
 	// 标记 jsonp ajax render
 	let cgiType;
 	if(/\/ajax\//g.test(originalUrl)) {
-		cgiType = 'ajax';
+		if(request.method.toLowerCase() === 'get' 
+			&& typeof(request.query[config.jsonp]) === 'string') {
+			cgiType = 'jsonp';
+		} else {
+			cgiType = 'ajax';
+		}
 	} else {
 		cgiType = 'page';
 	}
