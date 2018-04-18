@@ -11,16 +11,16 @@ module.exports = async (err, ctx) => {
 		return;
 	}
 
-	const { $cgiType: cgiType } = request;
+	const { $cgiType: cgiType, originalUrl } = request;
 	Logger.error({
-		detail: err,
+		info: '[internal error] =>' + originalUrl,
+		detail: err.stack,
 		reqSeqId: request.$reqSeqId,
 	});
 	if(cgiType === 'ajax' || cgiType === 'jsonp') {
-		
+
 		const error = ERROR.create('SERVER_RESPONSE_ERROR', {
-			'msg': 'Server ${msg}',
-			'detail': { err: message },
+			'msg': '${msg}[Server]',
 		});
 		utilLib.resJson(error, ctx);
 	} else {

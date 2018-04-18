@@ -17,21 +17,20 @@ class AjaxCgiBase extends CgiBase {
 		let action = ctx.params.action || 'index';
 		action = action.replace(/^./, action[0].toUpperCase());
 		const actionHandler = `on${action}`;
-
 		if (typeof this[actionHandler] === 'function') {
 			try {
 				await this[actionHandler]();
 			} catch (err) {
 				Logger.error(JSON.stringify({
-					detail: err,
+					info: '[res ajax 50x] =>' + ctx.originalUrl,
+					detail: err.stack,
 					seqReqId: request.$reqSeqId,
 				}));
 				this.send(err);
 			}
 		} else {
 			this.send(ERROR.create('404', {
-				'msg': 'Server cgi: ${msg}',
-				'detail': { err: message },
+				'msg': '${msg}[Server]',
 			}));
 		}
 	}

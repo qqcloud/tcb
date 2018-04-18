@@ -1,5 +1,5 @@
 const utillib = require('../utillib');
-const errors = Object.assign({}, require('./sys'), require('../../config/error'));
+const errors = Object.assign({}, require('./sys'), require('../../config').error);
 
 // `key: [code, msg]` => `key: { 'code': code, 'msg': msg }`
 const errorTypes = _.transform(errors, (ret, value, key) => {
@@ -57,7 +57,10 @@ class ResponseError extends Error {
 		errorObj.stack = this.stack;
 
 		if (!options.dontLogError) {
-			Logger.error(this.name + ': ' + JSON.stringify(errorObj));
+			Logger.error(JSON.stringify({
+				info: this.name,
+				detial: errorObj,
+			}));
 		}
 	}
 

@@ -1,6 +1,8 @@
 /**
  * format req/res data for service 
  */
+const config = require('../../../config');
+
 module.exports = {
 	'mock': {
 		// 请求配置
@@ -25,10 +27,10 @@ module.exports = {
 		packResData(result){
 			return new Promise((reslove, reject) => {
 				if (_.isObject(result) && 'returnCode' in result) {
-					resolve({
-						code: resp.returnCode,
-						msg: resp.returnMessage || '',
-						data: resp.data || {},
+					reslove({
+						code: result.returnCode,
+						msg: result.returnMessage || '',
+						data: result.data || {},
 					});
 				} else {
 					reject(ERROR.create('503', 'Backend ${msg}'));

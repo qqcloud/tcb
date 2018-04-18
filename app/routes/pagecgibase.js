@@ -19,20 +19,21 @@ class PageCgiBase extends CgiBase {
 		if (typeof this[actionHandler] === 'function') {
 			try {
 				Logger.debug(JSON.stringify({
-					detail: '[render page] =>' + ctx.originalUrl,
+					info: '[render page] =>' + ctx.originalUrl,
 					seqReqId: request.$reqSeqId,
 				}));
 				await this[actionHandler]();
 			} catch (e) {
 				Logger.error(JSON.stringify({
-					detail: '[render page 50x] =>' + ctx.originalUrl,
+					info: '[render page 50x] =>' + ctx.originalUrl,
+					detail: e.stack,
 					seqReqId: request.$reqSeqId,
 				}));
 				await utilLib.render50X(ctx);
 			}
 		} else {
 			Logger.error(JSON.stringify({
-				detail: '[render page 404] =>' + ctx.originalUrl,
+				info: '[render page 404] =>' + ctx.originalUrl,
 				seqReqId: request.$reqSeqId,
 			}));
 			await utilLib.render404(ctx);

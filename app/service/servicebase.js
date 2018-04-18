@@ -1,6 +1,6 @@
 const request = require('../libs/request');
 const utilLib = require('../libs/utillib');
-const service = require('../config/service');
+const service = require('../config').service;
 
 /**
  * ServiceBase
@@ -17,7 +17,7 @@ class ServiceBase {
 		this.ctx = ctx;
 
 		// inject `interfaces`
-		_.each(service, (item, name) => {
+		_.map(service, (item, name) => {
 			this[`$${name}Interface`] = item.interface;
 		});
 	}

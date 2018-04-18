@@ -1,5 +1,5 @@
 const queryString = require('querystring');
-const config = require('../../config/index');
+const config = require('../../config');
 
 module.exports = {
 	getI18n(lang) {
@@ -25,6 +25,17 @@ module.exports = {
 				msg: data.msg,
 				data: null,
 			}
+		} else if(data instanceof Error){
+			const error = ERROR.create('SERVER_RESPONSE_ERROR', {
+				'msg': 'Server: ${msg}',
+			});
+			result = {
+				code: error.code,
+				msg: error.msg,
+				data: null,
+			}
+		} else if(_.isObject(data) && data.code !== undefined && data.data){
+			result = data;
 		} else {
 			result = {
 				code: 0,
@@ -45,7 +56,6 @@ module.exports = {
 		} else {
 			const error = ERROR.create('SERVER_RESPONSE_ERROR', {
 				'msg': 'Server: ${msg}',
-				'detail': { err: message },
 			});
 			ctx.body = this.getResDataForJson(error);
 		}

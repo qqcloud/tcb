@@ -5,7 +5,7 @@ module.exports = config => {
 	return createLogger({
 		level: normal.level,
 		format: format.combine(
-			require('../helper/formatter'),
+			require('../lib/formatter'),
 		),
 		transports: [new transports.Console()]
 	});

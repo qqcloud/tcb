@@ -6,7 +6,7 @@ module.exports = {
 	'socketTimeout': 10 * 1000,
 
 	'service': {
-		'mock': 'http:127.0.0.1:9998',
+		'mock': 'http://127.0.0.1:3000',
 	},
 
 	'log': {

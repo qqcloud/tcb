@@ -3,6 +3,6 @@
  */
 module.exports = {
 	'mock': {
-		'getSomeThing': 'mock.getSomeThing',
+		'getSomeThing': '/string',
 	},
 };

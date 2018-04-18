@@ -16,18 +16,22 @@ class Provider {
 	}
 
 	async fetch(interfaceName, data = {}, opts = {}, cb = () => {}) {
-		const packReqData = _.isFunction(service.packReqData) ? service.packReqData : util.packReqData;
-		const packResData = _.isFunction(service.packResData) ? service.packResData : util.packResData;
+		const packReqData = _.isFunction(this.service.packReqData) ? this.service.packReqData : util.packReqData;
+		const packResData = _.isFunction(this.service.packResData) ? this.service.packResData : util.packResData;
 
-		const reqData = packReqData(req, interfaceName, para);
-
+		const reqData = packReqData(this.req, interfaceName, data);
+		const suburl = opts.suburl || '';
 		const reqOpts = Object.assign({
-				url: service.url,
+				url: this.service.url,
 				data: reqData,
-			}, service.reqOpts,
+			}, this.service.reqOpts,
 			opts);
 
-		return new Promise(async (reslove, rejcet) => {
+		if(suburl) {
+			reqOpts.url += suburl;
+		}
+		
+		return new Promise(async (reslove, reject) => {
 			try {
 				const result = await Request(reqOpts);
 				packResData(result).then((data) => {

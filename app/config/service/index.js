@@ -9,6 +9,7 @@ module.exports = ((service, formatter, interface) => {
 	const result = {};
 	_.map(service, (url, name) => {
 		if (interface[name]) {
+			
 			if (formatter[name]) {
 				result[name] = formatter[name];
 				result[name].url = url;
@@ -17,6 +18,7 @@ module.exports = ((service, formatter, interface) => {
 					url,
 				}
 			}
+
 			result[name].interface = interface[name];
 		}
 	});

@@ -16,7 +16,7 @@ module.exports = config => {
 				maxFiles: normal.maxDays,
 
 				format: format.combine(
-					require('../helper/formatter'),
+					require('../lib/formatter'),
 				),
 			}),
 		];
@@ -24,8 +24,8 @@ module.exports = config => {
 		if (important && important.on) {
 
 			const tempImportant = Object.assign({}, normal, important);
-			const importantUrl = require('../../config/importanturl');
-			const ignoreNotImportant = require('../helper/ignore-not-important')(importantUrlLog);
+			const importantUrl = require('../../config').importantUrl;
+			const ignoreNotImportant = require('../lib/ignore-not-important')(importantUrlLog);
 			
 			results.push(new DailyRotateFile({
 				level: tempImportant.evel,
@@ -37,7 +37,7 @@ module.exports = config => {
 
 				format: format.combine(
 					ignoreNotImportant(),
-					require('../helper/formatter'),
+					require('../lib/formatter'),
 				),
 			}));
 		}

@@ -1,4 +1,5 @@
 const config = require('../../../../config');
+const utilLib = require('../../utillib');
 
 module.exports = {
 
@@ -49,13 +50,13 @@ module.exports = {
 			url: url,
 			timeout: timeout || config.serviceTimeout,
 			time: time === false ? false : true,
-			method: helper.getMethod(method),
+			method: this.getMethod(method),
 			resolveWithFullResponse: true, // 返回原始 response
 		};
 
 		if (reqOpts.method === 'POST') {
 
-			const postType = helper.getPostType(opts.postType);
+			const postType = this.getPostType(opts.postType);
 			reqOpts[postType] = data;
 		} else if (reqOpts.method === 'GET') {
 

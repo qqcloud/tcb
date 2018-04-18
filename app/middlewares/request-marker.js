@@ -29,7 +29,7 @@ module.exports = async (ctx, next) => {
 	// mark important log
 	if(important && important.on) {
 		const { marker } = important;
-		const importantUrl = require('../config/importanturl');
+		const importantUrl = require('../config').importantUrl;
 		
 		const isImportant = _.some(importantUrl, function(isOn, url){
 			return isOn && originalUrl.indexOf(url) !== -1;

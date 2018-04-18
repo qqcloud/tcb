@@ -1,4 +1,4 @@
-const service = require('../../config/service');
+const service = require('../../config').service;
 const Provider = require('./provider');
 
 module.exports = ctx => {
