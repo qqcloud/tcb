@@ -5,7 +5,7 @@ const config = require('../../../config');
 
 module.exports = {
 	'mock': {
-		// 请求配置
+		// 请求设置
 		reqOpts: {
 			timeout: 20 * 1000,
 			method: 'get',
@@ -24,7 +24,7 @@ module.exports = {
 			};
 		},
 		// 响应数据包组装
-		packResData(result){
+		packResData(result, reqOpts){
 			return new Promise((reslove, reject) => {
 				if (_.isObject(result) && 'returnCode' in result) {
 					reslove({
@@ -33,7 +33,9 @@ module.exports = {
 						data: result.data || {},
 					});
 				} else {
-					reject(ERROR.create('503', 'Backend ${msg}'));
+					reject(ERROR.create('503', {
+						msg: '${msg}[Backend]',
+					}));
 				}
 			});
 		},

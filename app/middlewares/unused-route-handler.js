@@ -1,5 +1,5 @@
 /**
- * 处理未被使用（未命中）的路由
+ * unused route handler
  */
 const utilLib = require('../libs/utillib');
 
@@ -7,9 +7,10 @@ module.exports = async (ctx, next) => {
 	const {request, response} = ctx;
 	const {$cgiType} = request;
 
-	if($cgiType === 'ajax'){
-
-	} else {
+	if($cgiType === 'page'){
 		await utilLib.render404(ctx);
+	} else {
+		ctx.status = 404;
+		utilLib.resJson(ERROR.create('404'));
 	}
 };

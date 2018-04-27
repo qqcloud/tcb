@@ -35,12 +35,12 @@ module.exports = {
 		return new Promise((reslove, reject) => {
 			if (_.isObject(result) && 'returnCode' in result) {
 				resolve({
-					code: resp.returnCode,
-					msg: resp.returnMessage || '',
-					data: resp.data || {},
+					code: result.returnCode,
+					msg: result.returnMessage || '',
+					data: result.data || {},
 				});
 			} else {
-				reject(ERROR.create('503', 'Backend ${msg}'));
+				reject(ERROR.create('503', '${msg}[Backend]'));
 			}
 		});
 	},

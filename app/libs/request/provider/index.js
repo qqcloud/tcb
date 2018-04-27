@@ -21,6 +21,7 @@ class Provider {
 
 		const reqData = packReqData(this.req, interfaceName, data);
 		const suburl = opts.suburl || '';
+		delete opts.suburl;
 		const reqOpts = Object.assign({
 				url: this.service.url,
 				data: reqData,
@@ -34,7 +35,10 @@ class Provider {
 		return new Promise(async (reslove, reject) => {
 			try {
 				const result = await Request(reqOpts);
-				packResData(result).then((data) => {
+				packResData(result, {
+					interface: interfaceName,
+					...reqOpts
+				}).then((data) => {
 					cb(reqOpts, data);
 					reslove(data);
 				}).catch((err) => {

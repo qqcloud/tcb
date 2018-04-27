@@ -17,25 +17,29 @@ module.exports = {
 	render50X(ctx) {
 		return ctx.render('50x');
 	},
-	getResDataForJson(data){
+	getResDataForJson(data) {
 		let result;
-		if(data instanceof ERROR.ResponseError) {
+		if (data instanceof ERROR.ResponseError) {
 			result = {
 				code: data.code,
 				msg: data.msg,
-				data: null,
-			}
-		} else if(data instanceof Error){
+				data: data.data,
+				detail: data.detail
+			};
+		} else if (data instanceof Error) {
 			const error = ERROR.create('SERVER_RESPONSE_ERROR', {
-				'msg': 'Server: ${msg}',
+				'msg': '${msg}[Server]',
 			});
 			result = {
 				code: error.code,
 				msg: error.msg,
 				data: null,
-			}
-		} else if(_.isObject(data) && data.code !== undefined && data.data){
-			result = data;
+			};
+		} else if (_.isPlainObject(data) && data.code !== undefined && data.data) {
+			result = Object.assign({}, {
+				code: 0,
+				msg: 'ok',
+			}, data);
 		} else {
 			result = {
 				code: 0,
@@ -46,23 +50,29 @@ module.exports = {
 		return result;
 	},
 	resJson(data, ctx) {
-		const { request, response } = ctx;
+		const {
+			request,
+			response
+		} = ctx;
 		const cgiType = request.$cgiType;
 		const resData = this.getResDataForJson(data);
-		if(cgiType === 'jsonp'){
+		if (cgiType === 'jsonp') {
 			this.resJsonp(resData, ctx);
-		} else if(cgiType === 'ajax') {
+		} else if (cgiType === 'ajax') {
 			ctx.body = resData;
 		} else {
 			const error = ERROR.create('SERVER_RESPONSE_ERROR', {
-				'msg': 'Server: ${msg}',
+				'msg': '${msg}[Server]',
 			});
 			ctx.body = this.getResDataForJson(error);
 		}
 		return;
 	},
 	resJsonp(data, ctx) {
-		const { request, response } = ctx;
+		const {
+			request,
+			response
+		} = ctx;
 		const jsonpFunName = request.query[config.jsonp].replace(/[^\w_]/gmi, '');
 		return ctx.body = jsonpFunName + '(' + JSON.stringify(data) + ');';
 	},
@@ -87,73 +97,57 @@ module.exports = {
 		return url + hash;
 	},
 	vsub(tmpl, vector) {
-		return ('' + tmpl).replace(/\$\{([^\{\}]+)\}/g, function (_, p, v) {
+		return ('' + tmpl).replace(/\$\{([^\{\}]+)\}/g, function(_, p, v) {
 			return (v = (vector || {})[p]) == null ? '' : v;
 		});
 	},
-	/**
-	 * 工具方法：构造Promise::then处理函数
-	 * @param  {String|Any}          prop  成功取值
-	 * @param  {String|Array|Object} error 错误码／错误码映射
-	 * @return {Function} 回调函数
-	 * @author yomeeliu
-	 */
-	respond(prop, error = 'SERVER_RESPONSE_ERROR') {
-		const DEFAULT_ERROR_TYPE = 'SERVER_RESPONSE_ERROR';
+	async respond(reqPromise, error = 'SERVER_RESPONSE_ERROR', opts = {}) {
+		let errorMap;
+		if (_.isString(error) && ERROR.errorTypes[error]) {
+			errorMap = {
+				'*': error,
+			};
+		} else if (_.isPlainObject(error)) {
 
-		return (resp = {}) => {
-			const code = resp.code;
-
-			if (code === 0) {
-				if (typeof prop === 'function') {
-					return prop(resp);
-				}
-
-				const ispath = (prop && typeof prop === 'string' || Array.isArray(prop));
-				return (ispath ? _.property(prop)(resp) : prop);
-			}
-
-			if (!_.isPlainObject(error)) {
-				error = { '*': error };
-			}
-
-			// 映射后台接口错误码到`E.ERROR_TYPES`
-			const errorHandlers = _.transform(error, (ret, handler, codes) => {
-				String(codes).split('|').forEach(code => {
-					ret[code] = handler;
-				});
+			errorMap = _.transform(error, (ret, value, key) => {
+				ret[key] = ERROR.errorTypes[value] ? value : 'SERVER_RESPONSE_ERROR';
 			}, {});
 
-			const targetHandler = errorHandlers[code] || errorHandlers['*'];
-
-			if (typeof targetHandler === 'function') {
-				return targetHandler(resp);
+			if (!errorMap['*']) {
+				errorMap['*'] = 'SERVER_RESPONSE_ERROR';
 			}
+		} else {
+			errorMap = {
+				'*': 'SERVER_RESPONSE_ERROR',
+			};
+		}
+		return new Promise((reslove, reject) => {
+			try {
+				const result = await reqPromise();
+				const {
+					code,
+					msg
+				} = result;
+				if (code === 0) {
+					reslove(result);
+				} else if (errorMap[code]) {
+					const error = ERROR.create(errorMap[code]);
 
-			if (Array.isArray(targetHandler) && targetHandler.length === 2) {
-				let [code, msg] = targetHandler;
+					if (opts.useOriMsg && msg) {
+						error.msg = msg;
+					}
+					reject(error);
+				} else {
+					const error = ERROR.create(errorMap['*']);
 
-				if (code === '${code}') {
-					code = resp.code;
+					if (opts.useOriMsg && msg) {
+						error.msg = msg;
+					}
+					reject(error);
 				}
-
-				msg = this.vsub(msg, { code: resp.code, msg: resp.msg });
-
-				return Promise.reject(E.create('ERROR_DEFAULT', { code, msg }));
+			} catch (err) {
+				reject(err);
 			}
-
-			if (typeof targetHandler === 'string') {
-				let [type, ...msg] = targetHandler.split('|');
-
-				msg = msg.length && msg.join('|') || void(0);
-				if (typeof msg === 'string') {
-					msg = this.vsub(msg, { code: resp.code, msg: resp.msg });
-				}
-
-				return Promise.reject(E.create(type, msg));
-			}
-
-			return Promise.reject(E.create(DEFAULT_ERROR_TYPE));
-		};
+		});
 	},
 };
