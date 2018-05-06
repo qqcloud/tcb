@@ -21,4 +21,5 @@ module.exports = {
 	'CONNECT_TIMEOUT': [2, '连接服务器超时，请稍后再试'],
 	'SERVER_RESPONSE_ERROR': [3, '服务器响应错误，请稍后再试'],
 	'SERVER_RESPONSE_TIMEOUT': [4, '服务器响应超时，请稍后再试'],
+	'REQUEST_PARAMS_ERROR': [5, '请求参数有误，请检查后再试'],
 };

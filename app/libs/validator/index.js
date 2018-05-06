@@ -1,6 +1,6 @@
-const validatorConfig = require('../../config').validator;
+const Validator = require('./validator');
 
-module.exports =  {
-
-	
+module.exports = (customRules) => {
+	const extendRules = Object.assign(require('./rules'), customRules);
+	return new Validator(extendRules);
 };

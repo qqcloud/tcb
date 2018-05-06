@@ -1,9 +1,16 @@
 const validator = require('validator');
 
-module.exports = {
+class Validator {
+	
+	constructor(extendRules = {}){
+		this.extendRules = extendRules;
+	}
 
-	validate(data, ruleConfig){
-		const { required, type } = ruleConfig;
+	validate(data, ruleConfig) {
+		const {
+			required,
+			type
+		} = ruleConfig;
 		let isValidated = false;
 		switch (type) {
 			case 'String':
@@ -23,13 +30,18 @@ module.exports = {
 				break;
 		}
 		return isValidated;
-	},
+	}
+
 	validateString(data, ruleConfig) {
-		const { required, length, rule } = ruleConfig;
+		const {
+			required,
+			length,
+			rule
+		} = ruleConfig;
 		const ruleFun = this.getValidateRuleFun(rule);
 		let isValidated = false;
-		if(required){
-			if(_.isString(data)) {
+		if (required) {
+			if (_.isString(data)) {
 				isValidated = ruleFun(data);
 			} else {
 				isValidated = false;
@@ -38,14 +50,18 @@ module.exports = {
 			isValidated = true;
 		}
 		return isValidated;
-	},
+	}
+
 	validateObject(data, ruleConfig) {
-		const { required, child: childRule } = ruleConfig;
+		const {
+			required,
+			child: childRule
+		} = ruleConfig;
 
 		let isValidated = false;
-		if(required){
-			if(_.isObject(data)) {
-				if(childRule && _.isObject(childRule)) {
+		if (required) {
+			if (_.isObject(data)) {
+				if (childRule && _.isObject(childRule)) {
 
 					isValidated = _.some(childRule, (config, key) => {
 						return !this.validate(data[key], config);
@@ -60,16 +76,21 @@ module.exports = {
 			isValidated = true;
 		}
 		return isValidated;
-	},
+	}
+
 	validateArray(data, ruleConfig) {
-		const { required, child: childRule, length } = ruleConfig;
+		const {
+			required,
+			child: childRule,
+			length
+		} = ruleConfig;
 
 		let isValidated = false;
-		if(required){
-			if(_.isArray(data)) {
-				if(childRule && _.isObject(childRule)) {
+		if (required) {
+			if (_.isArray(data)) {
+				if (childRule && _.isObject(childRule)) {
 					let defaultRule = _.pick(childRule, 'all');
-					if(defaultRule){
+					if (defaultRule) {
 						isValidated = _.some(data, (value, index) => {
 							return !this.validate(value, defaultRule);
 						});
@@ -79,7 +100,7 @@ module.exports = {
 						});
 					}
 				} else {
-					if(length) {
+					if (length) {
 						isValidated = this.validateLength(data, length);
 					} else {
 						isValidated = true;
@@ -92,13 +113,18 @@ module.exports = {
 			isValidated = true;
 		}
 		return isValidated;
-	},
+	}
+
 	validateNumber(data, ruleConfig) {
-		const { required, length, rule } = ruleConfig;
+		const {
+			required,
+			length,
+			rule
+		} = ruleConfig;
 		const ruleFun = this.getValidateRuleFun(rule);
 		let isValidated = false;
-		if(required){
-			if(_.isNumber(data)) {
+		if (required) {
+			if (_.isNumber(data)) {
 				isValidated = ruleFun(String(data));
 			} else {
 				isValidated = false;
@@ -107,16 +133,17 @@ module.exports = {
 			isValidated = true;
 		}
 		return isValidated;
-	},
+	}
+
 	validateLength(data, length) {
 		let isValidated = false;
 
-		if(!_.isArray(data) && !_.isString(data)) {
+		if (!_.isArray(data) && !_.isString(data)) {
 			return isValidated = false;
 		}
 
 		const dLen = data.length;
-		if(_.isArray(length)) {
+		if (_.isArray(length)) {
 			const lLen = length.length;
 			switch (len) {
 				case 0:
@@ -136,21 +163,32 @@ module.exports = {
 					isValidated = dLen >= minLen && dLen <= maxLen;
 					break;
 			}
-		} else if(_.isNumber(length)) {
+		} else if (_.isNumber(length)) {
 			isValidated = dLen === length;
 		} else {
 			isValidated = false;
 		}
 		return isValidated;
-	},
-	getValidateRuleFun(rule){
-		let ruleFun;
-		if(_.isString(rule)) {
-			if(_.isFunction(validator[rule])) {
-				ruleFun = validator[rule];
+	}
+
+	getValidateRuleFun(rule) {
+		let ruleName, ruleOpts, ruleFun;
+
+		if (_.isString(rule)) {
+			ruleName = rule;
+		} else if (_.isObject(rule)) {
+			ruleName = rule.type;
+			ruleOpts = rule.opts;
+		}
+
+		if (_.isString(ruleName)) {
+			if (_.isFunction(this.extendRules[ruleName])) {
+				ruleFun = validator[ruleName];
+			} else if (_.isFunction(validator[ruleName])) {
+				ruleFun = validator[ruleName];
 			} else {
-				let ruleName = rule.replace(/^./, rule[0].toUpperCase());
-				if(_.isFunction(validator[ruleName])) {
+				ruleName = 'is' + ruleName.replace(/^./, ruleName[0].toUpperCase());
+				if (_.isFunction(validator[ruleName])) {
 					ruleFun = validator[ruleName];
 				} else {
 					ruleFun = () => {
@@ -163,6 +201,11 @@ module.exports = {
 				return false;
 			};
 		}
-		return ruleFun;
-	},
-};
+		return (data) => {
+			const args = _.isArray(ruleOpts) ? [data].concat(ruleOpts) : [data];
+			return ruleFun(...args);
+		};
+	}
+}
+
+module.exports = Validator;

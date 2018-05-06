@@ -14,8 +14,8 @@ module.exports = {
 	render404(ctx) {
 		return ctx.render('404');
 	},
-	render50X(ctx) {
-		return ctx.render('50x');
+	render50X(ctx, msg = '') {
+		return ctx.render('50x', msg);
 	},
 	getResDataForJson(data) {
 		let result;
