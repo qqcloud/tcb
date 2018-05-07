@@ -7,7 +7,8 @@
     "local": "nodemon ./bin/startup.js --env=local",
     "dev": "npm start --env=dev",
     "prd": "npm start --env=prd",
-    "test": "npm start --env=test"
+    "test": "npm start --env=test",
+    "jsdoc": "jsdoc -c ./jsdoc.json"
   },
   "dependencies": {
     "debug": "^2.6.3",
@@ -29,6 +30,7 @@
     "winston-daily-rotate-file": "^3.0.1"
   },
   "devDependencies": {
+    "jsdoc": "^3.5.5",
     "nodemon": "^1.17.3"
   }
 }

@@ -20,9 +20,9 @@ module.exports = async(ctx, next) => {
 	method = method.toLowerCase();
 	path = _.isString(path) ? path.replace(regExp, '') : '';
 
-	const routeConf = _.find(routesConf, (conf, route)) {
+	const routeConf = _.find(routesConf, (conf, route)=> {
 		return path === route.replace(regExp, '');
-	};
+	});
 	const data = method === 'post' ? request.body : method === 'get' ? request.query : request.body;
 	if (_.isObject(routeConf)) {
 		if (routeConf[action]) {

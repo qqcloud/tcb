@@ -15,7 +15,7 @@ module.exports = {
 		return ctx.render('404');
 	},
 	render50X(ctx, msg = '') {
-		return ctx.render('50x', msg);
+		return ctx.render('50x', {msg});
 	},
 	getResDataForJson(data) {
 		let result;
@@ -121,7 +121,7 @@ module.exports = {
 				'*': 'SERVER_RESPONSE_ERROR',
 			};
 		}
-		return new Promise((reslove, reject) => {
+		return new Promise(async (reslove, reject) => {
 			try {
 				const result = await reqPromise();
 				const {

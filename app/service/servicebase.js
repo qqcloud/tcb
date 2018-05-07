@@ -6,6 +6,11 @@ const service = require('../config').service;
  * ServiceBase
  */
 class ServiceBase {
+	/**
+	 * Create a Service
+	 * @param  {object} ctx context
+	 * @return {null}
+	 */
 	constructor(ctx) {
 		if (new.target === ServiceBase) {
 			throw new Error('`ServiceBase` cannot be instantiated directly.');
@@ -22,9 +27,6 @@ class ServiceBase {
 		});
 	}
 
-	/**
-	 * 
-	 */
 	$respond() {
 		return utillib.respond(...arguments);
 	}

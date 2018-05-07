@@ -1,14 +1,14 @@
 /**
  * service config
  */
-const interface = require('./interface');
+const interfaceConf = require('./interface');
 const formatter = require('./formatter');
 const service = require('../../../config').service;
 
-module.exports = ((service, formatter, interface) => {
+module.exports = ((service, formatter, interfaceConf) => {
 	const result = {};
 	_.map(service, (url, name) => {
-		if (interface[name]) {
+		if (interfaceConf[name]) {
 			
 			if (formatter[name]) {
 				result[name] = formatter[name];
@@ -19,8 +19,8 @@ module.exports = ((service, formatter, interface) => {
 				}
 			}
 
-			result[name].interface = interface[name];
+			result[name].interface = interfaceConf[name];
 		}
 	});
 	return result;
-})(service, formatter, interface);
+})(service, formatter, interfaceConf);
