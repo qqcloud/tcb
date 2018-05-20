@@ -1,8 +1,6 @@
 /**
  * internal error handle
  */
-
-const config = require('../config');
 const utilLib = require('../libs/utillib');
 
 module.exports = async (err, ctx) => {

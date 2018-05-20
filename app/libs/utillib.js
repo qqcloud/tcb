@@ -76,6 +76,24 @@ module.exports = {
 		const jsonpFunName = request.query[config.jsonp].replace(/[^\w_]/gmi, '');
 		return ctx.body = jsonpFunName + '(' + JSON.stringify(data) + ');';
 	},
+	cookie(ctx, key, value, opts = {}){
+		const tempOpts = _.cloneDeep(opts);
+		tempOpts.expires = _.isNumber(tempOpts.expires) ? new Date(Date.now() + tempOpts.expires * 1000) : new Date(0);
+		
+		const options = Object.assign({
+			path: '/',
+			domain: ctx.hostname.substr(ctx.hostname.indexOf('.') + 1),
+			expires: new Date(0),
+			httpOnly: true,
+			overwrite: false,
+		}, tempOpts);
+
+		if(arguments.length === 2) {
+			return ctx.cookies.get(key);
+		} else {
+			return ctx.cookies.set(key, value, options);
+		}
+	},
 	addQueryStringToUrl(rawUrl, qsObj) {
 		let hash = '',
 			url = '',
