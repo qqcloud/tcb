@@ -20,6 +20,7 @@ class Provider {
 		const packResData = _.isFunction(this.service.packResData) ? this.service.packResData : util.packResData;
 
 		const reqData = packReqData(this.req, interfaceName, data);
+
 		const suburl = opts.suburl || '';
 		delete opts.suburl;
 		const reqOpts = Object.assign({
@@ -31,14 +32,12 @@ class Provider {
 		if(suburl) {
 			reqOpts.url += suburl;
 		}
-		
+
 		return new Promise(async (reslove, reject) => {
 			try {
 				const result = await Request(reqOpts);
-				packResData(result, {
-					interface: interfaceName,
-					...reqOpts
-				}).then((data) => {
+				reqOpts.interface = interfaceName;
+				packResData(result, reqOpts).then((data) => {
 					cb(reqOpts, data);
 					reslove(data);
 				}).catch((err) => {

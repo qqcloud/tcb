@@ -28,7 +28,7 @@ class ServiceBase {
 	}
 
 	$respond() {
-		return utillib.respond(...arguments);
+		return utilLib.respond(...arguments);
 	}
 }
 

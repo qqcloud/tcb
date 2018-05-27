@@ -2,40 +2,36 @@ const Koa = require('koa');
 const app = new Koa();
 const views = require('koa-views');
 const json = require('koa-json');
-const onerror = require('koa-onerror');
 const bodyparser = require('koa-bodyparser');
-const logger = require('koa-logger');
 const path = require('path');
 require('./globals');
-// error handler
-onerror(app)
+
+const mockService = require('./mock/mock-service');
+
+
+mockService.init();
 
 // middlewares
 app.use(bodyparser({
   enableTypes:['json', 'form', 'text']
-}))
-app.use(json())
-app.use(logger())
+}));
+
+app.use(json());
+
 app.use(require('koa-static')(SERVER_ROOT_PATH + '/public'))
 
 app.use(views(path.join(SERVER_ROOT_PATH, 'app/views'), { extension: 'ejs' }));
 
 app.use(require('./app/middlewares/request-marker'));
 
-// logger
-app.use(async (ctx, next) => {
-  const start = new Date()
-  await next()
-  const ms = new Date() - start
-  console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
-})
+app.use(require('./app/middlewares/request-logger'));
 
 // route dispatcher
 app.use(require('./app/middlewares/common-route-dispatcher').routes());
 
-// error-handling
-app.on('error', (err, ctx) => {
-  console.error('server error', err, ctx)
-});
+app.use(require('./app/middlewares/unused-route-handler'));
 
-module.exports = app
+// error-handling
+app.on('error', require('./app/middlewares/internal-error-handler'));
+
+module.exports = app;

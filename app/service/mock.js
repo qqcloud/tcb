@@ -4,15 +4,9 @@ class MockService extends ServiceBase {
 
 	async getSomeThing() {
 		const { ctx } = this;
-		const reqPromise = this.$mock.fetch(this.$mockInterface.getSomeThing, {}, {
-			suburl: this.$mockInterface.getSomeThing,
-		});
+		const reqPromise = this.$mock.fetch(this.$mockInterface.getSomeThing, {name:'jack'});
 
-		return this.$respond(reqPromise, {
-			'8347': 'ERROR'
-		}, {
-			useOriMsg: true,
-		});
+		return reqPromise;
 	}
 
 	async getSomeThing1() {
@@ -25,7 +19,7 @@ class MockService extends ServiceBase {
 		} catch (err) {
 			result = err;
 		}
-		return Promise.resolve(this.$respond(result));
+		return Promise.resolve(result);
 	}
 }
 

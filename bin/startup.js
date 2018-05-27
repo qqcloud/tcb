@@ -6,7 +6,6 @@
 
 var app = require('../app');
 var config = require('../config/index');
-var debug = require('debug')('demo:server');
 var http = require('http');
 
 /**
@@ -87,5 +86,4 @@ function onListening() {
   var bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
-  debug('Listening on ' + bind);
 }

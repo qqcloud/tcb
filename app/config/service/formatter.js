@@ -8,7 +8,7 @@ module.exports = {
 		// 请求设置
 		reqOpts: {
 			timeout: 20 * 1000,
-			method: 'get',
+			method: 'post',
 		},
 		// 请求数据包组装
 		packReqData(req, interfaceName, para) {

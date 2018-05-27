@@ -40,6 +40,5 @@ module.exports = async (ctx, next) => {
 			request.$reqSeqId = request.$reqSeqId + marker;
 		}
 	}
-	
 	await next();
 };

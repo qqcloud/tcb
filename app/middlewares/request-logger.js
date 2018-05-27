@@ -16,6 +16,6 @@ module.exports = async (ctx, next) => {
 		'reqSeqId': request.$reqSeqId,
 	});
 
-	Logger.info('[request] =>', requestInfo);
+	Logger.info('[request] =>' + requestInfo);
 	await next();
 };

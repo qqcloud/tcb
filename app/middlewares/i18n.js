@@ -17,5 +17,7 @@ module.exports = async (ctx, next) => {
 		i18n.setLocale(ctx.query.lang);
 	}
 	ctx.state.i18n = request.i18n = i18n;
+	ctx.state.__ = i18n.__;
+	
 	await next();
 };
