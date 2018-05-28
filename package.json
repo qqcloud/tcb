@@ -31,6 +31,7 @@
   "devDependencies": {
     "jsdoc": "^3.5.5",
     "nock": "^9.2.6",
+    "koa-proxies": "^0.7.0",
     "nodemon": "^1.17.3"
   }
 }

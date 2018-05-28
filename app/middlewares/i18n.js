@@ -3,13 +3,7 @@
  */
 const config = require('../config');
 const utilLib = require('../libs/utillib');
-const suportLocales = ['zh', 'en'];
-
-const i18n = new (require('i18n-2'))({
-    devMode: config.env !== 'prd',
-    locales: suportLocales,
-    directory: '../config/locales',
-});
+const i18n = require('../libs/i18n');
 
 module.exports = async (ctx, next) => {
 	const { request } = ctx;
