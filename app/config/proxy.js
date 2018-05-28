@@ -1,5 +1,5 @@
 /**
- * service proxies config
+ * service proxy config
  */
 module.exports = {
 	'/proxy/mock': 'https://api.github.com/users',

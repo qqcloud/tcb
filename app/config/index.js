@@ -6,4 +6,5 @@ module.exports = {
 	error: require('./error'),
 	service: require('./service'),
 	validator: require('./validator'),
+	proxy: require('./proxy'),
 };

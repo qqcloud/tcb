@@ -9,6 +9,7 @@ module.exports = {
 		'mock': 'http://127.0.0.1:3000',
 	},
 	'mockService': 1, // 是否mock后台服务
+	'proxyService': 1, // 是否代理后台服务
 	'log': {
 		'normal': {
 			'level': 'debug', // 可选值: debug, info, warn, error
