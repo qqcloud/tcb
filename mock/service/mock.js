@@ -14,7 +14,7 @@ module.exports = {
 			'reply': [
 				200,
 				{
-					returnCode: 0,
+					returnCode: 101,
 					returnMessage: 'ok',
 					data: {
 						test:1,

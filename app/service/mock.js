@@ -8,7 +8,11 @@ class MockService extends ServiceBase {
 			suburl: this.$mockInterface.getSomeThing,
 		});
 
-		return reqPromise;
+		return this.$respond(reqPromise, {
+			'100': 'MOCK_PARAMS_ERROR',
+			'101': 'MOCK_PARAMS_ERROR1',
+			'*': 'REQUEST_PARAMS_ERROR',
+		});
 	}
 
 	async getSomeThing1() {

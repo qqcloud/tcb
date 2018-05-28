@@ -141,7 +141,7 @@ module.exports = {
 		}
 		return new Promise(async (reslove, reject) => {
 			try {
-				const result = await reqPromise();
+				const result = await reqPromise;
 				const {
 					code,
 					msg

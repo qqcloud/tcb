@@ -14,7 +14,6 @@ module.exports = {
 		_.map(nockConf, (serviceConf, service) => {
 			_.map(serviceConf, (conf, interfaceName) => {
 				const { method, reply, origin, path } = conf;
-				console.log(conf);
 				if(method === 'get') {
 					nock(origin, options).
 					get(path).
