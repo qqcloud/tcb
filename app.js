@@ -8,8 +8,9 @@ require('./globals');
 
 const mockService = require('./mock/mock-service');
 
-
 mockService.init();
+
+require('./app/middlewares/service-proxy')(app);
 
 // middlewares
 app.use(bodyparser({

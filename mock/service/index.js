@@ -1,6 +1,7 @@
 /**
  * nock service config
  */
+const Path = require('path');
 const { URL } = require('url');
 const serviceConf = require('../../app/config').service;
 const mockServiceConf = {
@@ -22,7 +23,9 @@ module.exports = (() => {
 			_.map(service.interface, (conf, interfaceName) => {
 				const method = conf.method || defaultMethod;
 				if(conf.on && supportMethod.indexOf(method) !== -1) {
-					const path = serviceUrl.pathname;
+					let path = serviceUrl.pathname;
+					const interfaceNamePath = serviceConf[name]['interface'][interfaceName] || '';
+					path = service.suburl === 1 ? Path.join(path, interfaceNamePath) : path;
 					const tempConf = {
 						origin,
 						path,

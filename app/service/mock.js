@@ -4,7 +4,9 @@ class MockService extends ServiceBase {
 
 	async getSomeThing() {
 		const { ctx } = this;
-		const reqPromise = this.$mock.fetch(this.$mockInterface.getSomeThing, {name:'jack'});
+		const reqPromise = this.$mock.post(this.$mockInterface.getSomeThing, {name:'jack'}, {
+			suburl: this.$mockInterface.getSomeThing,
+		});
 
 		return reqPromise;
 	}

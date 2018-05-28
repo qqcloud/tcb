@@ -4,7 +4,7 @@
 const serviceConf = require('../../app/config').service['user'];
 
 module.exports = {
-	'on': 1,
+	'on': 0,
 	'method': 'post',
 	'filteringRequestBody': function(body) {
         return body.interface;

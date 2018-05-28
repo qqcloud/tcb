@@ -32,7 +32,6 @@ class Provider {
 		if(suburl) {
 			reqOpts.url += suburl;
 		}
-
 		return new Promise(async (reslove, reject) => {
 			try {
 				const result = await Request(reqOpts);

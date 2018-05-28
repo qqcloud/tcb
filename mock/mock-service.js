@@ -3,6 +3,8 @@ const nock = require('nock');
 const nockConf = require('./service');
 const config = require('../config');
 const delayTime = 200; // 200milliseconds
+const options = {allowUnmocked: true};
+
 module.exports = {
 	init(){
 		const env = config.env;
@@ -12,14 +14,15 @@ module.exports = {
 		_.map(nockConf, (serviceConf, service) => {
 			_.map(serviceConf, (conf, interfaceName) => {
 				const { method, reply, origin, path } = conf;
+				console.log(conf);
 				if(method === 'get') {
-					nock(origin).
+					nock(origin, options).
 					get(path).
 					delay(delayTime).
 					query(conf.query).
 					reply(conf.reply[0], conf.reply[1]);
 				} else {
-					nock(origin).
+					nock(origin, options).
 					filteringRequestBody(conf.filteringRequestBody).
 					post(path, conf.body).
 					delay(delayTime).
