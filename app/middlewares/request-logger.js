@@ -1,5 +1,14 @@
 /**
- * Request Logger
+ * Request logger middleware
+ * @module app/middlewares/request-logger
+ */
+
+/**
+ * Add request logger
+ * @author jerishi
+ * @DateTime 2018-05-30
+ * @param    {Object}     ctx   app ctx
+ * @param    {Function}   next  app next
  */
 module.exports = async (ctx, next) => {
 	const { request } = ctx;

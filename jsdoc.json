@@ -3,23 +3,29 @@
 		"allowUnknownTags": true
 	},
 	"source": {
-		"include": ["./app/libs"],
+		"include": ["./app/middlewares/", "./app/routes/", "./app/service/"],
 		"exclude": ["./node_modules/"],
 		"includePattern": ".+\\.js(doc|x)?$",
 		"excludePattern": "(^|\\/|\\\\)_"
 	},
-	"plugins": [],
+	"plugins": [
+		"plugins/markdown",
+		"plugins/summarize"
+	],
 	"templates": {
 		"cleverLinks": false,
 		"monospaceLinks": false,
 		"default": {
-			"outputSourceFiles": true
+			"outputSourceFiles": true,
+			"useLongnameInNav": true
 		}
 	},
 	"opts": {
 		"template": "templates/default", 
 		"encoding": "utf8", 
 		"destination": "./jsdoc",
+		"tutorials": "./jsdoc/tutorials",
+		"readme": "./README.md",
 		"recurse": true
 	}
 }

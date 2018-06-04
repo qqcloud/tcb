@@ -1,6 +1,3 @@
-/**
- * Request Validator
- */
 const {
 	rules,
 	routesConf,
@@ -8,6 +5,18 @@ const {
 const Validator = require('../libs/validator')(rules);
 const regExp = /(^\/*)|(\/*$)/g;
 
+/**
+ * Request validator middleware
+ * @module app/middlewares/request-validator
+ */
+
+/**
+ * Add request validator
+ * @author jerishi
+ * @DateTime 2018-05-30
+ * @param    {Object}     ctx   app ctx
+ * @param    {Function}   next  app next
+ */
 module.exports = async(ctx, next) => {
 	const {
 		request,

@@ -1,7 +1,16 @@
 const CgiBase = require('./cgibase');
 const utilLib = require('../libs/utillib');
-
+/**
+ * Class AjaxCgiBase
+ * @extends CgiBase
+ */
 class AjaxCgiBase extends CgiBase {
+
+	/**
+	 * Create a AjaxCgiBase
+	 * @author jerishi
+	 * @DateTime 2018-05-30
+	 */
 	constructor() {
 		super(...arguments);
 		const { ctx } = this;
@@ -9,7 +18,9 @@ class AjaxCgiBase extends CgiBase {
 	}
 
 	/**
-	 * handle route of ajax
+	 * Handle route of ajax
+	 * @author jerishi
+	 * @DateTime 2018-05-30
 	 */
 	async handle() {
 		const {ctx,next} = this;
@@ -34,7 +45,12 @@ class AjaxCgiBase extends CgiBase {
 			}));
 		}
 	}
-
+	/**
+	 * Send data for request
+	 * @author jerishi
+	 * @DateTime 2018-05-30
+	 * @param    {Object}   data response info
+	 */
 	send(data){
 		const { ctx } = this;
 		utilLib.resJson(data, ctx);

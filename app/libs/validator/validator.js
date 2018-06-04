@@ -1,11 +1,28 @@
 const validator = require('validator');
 
+/**
+ * Class Validator
+ */
 class Validator {
 	
+	/**
+	 * Create a Validator
+	 * @author jerishi
+	 * @DateTime 2018-05-30
+	 * @param    {Object}   extendRules   extend rules
+	 */
 	constructor(extendRules = {}){
 		this.extendRules = extendRules;
 	}
 
+	/**
+	 * Validate data by rule config
+	 * @author jerishi
+	 * @DateTime 2018-06-01
+	 * @param    {*}    	data       target data
+	 * @param    {Object}   ruleConfig rule config
+	 * @param    {Boolean}    is data validated
+	 */
 	validate(data, ruleConfig) {
 		const {
 			required,

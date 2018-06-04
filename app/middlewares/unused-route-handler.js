@@ -1,8 +1,17 @@
-/**
- * unused route handler
- */
 const utilLib = require('../libs/utillib');
 
+/**
+ * Unused route handler middleware
+ * @module app/middlewares/unused-route-handler
+ */
+
+/**
+ * Add unused route handler
+ * @author jerishi
+ * @DateTime 2018-05-30
+ * @param    {Object}     ctx   app ctx
+ * @param    {Function}   next  app next
+ */
 module.exports = async (ctx, next) => {
 	const {request, response} = ctx;
 	const {$cgiType} = request;

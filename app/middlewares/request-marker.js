@@ -1,10 +1,19 @@
-/**
- * Request Marker
- */
 const uuid = require('uuid');
 const config = require('../../config');
 const { important } = config.log;
 
+/**
+ * Request marker middleware
+ * @module app/middlewares/request-marker
+ */
+
+/**
+ * Add request marker
+ * @author jerishi
+ * @DateTime 2018-05-30
+ * @param    {Object}     ctx   app ctx
+ * @param    {Function}   next  app next
+ */
 module.exports = async (ctx, next) => {
 
 	const { request } = ctx;

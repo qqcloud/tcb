@@ -1,7 +1,15 @@
 const PageCgiBase = require('../../pagecgibase');
-
+/**
+ * Class HomePage
+ * @extends PageCgiBase
+ */
 class HomePage extends PageCgiBase {
 
+	/**
+	 * Page cgi: home/index
+	 * @author jerishi
+	 * @DateTime 2018-05-30
+	 */
 	async onIndex() {
 		const {ctx} = this;
 		
@@ -10,6 +18,11 @@ class HomePage extends PageCgiBase {
 		});
 	}
 
+	/**
+	 * Page cgi: home/test
+	 * @author jerishi
+	 * @DateTime 2018-05-30
+	 */
 	async onTest() {
 		const {ctx} = this;
 		ctx.body = 'test';

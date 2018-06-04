@@ -1,8 +1,17 @@
-/**
- * internal error handle
- */
 const utilLib = require('../libs/utillib');
 
+/**
+ * Error handler middleware
+ * @module app/middlewares/internal-error-handler
+ */
+
+/**
+ * Add error handler
+ * @author jerishi
+ * @DateTime 2018-05-30
+ * @param    {Object}     err   app err
+ * @param    {Function}   ctx   app ctx
+ */
 module.exports = async (err, ctx) => {
 	const { request, response } = ctx;
 	if (response.headersSent) {

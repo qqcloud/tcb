@@ -3,13 +3,15 @@ const utilLib = require('../libs/utillib');
 const service = require('../config').service;
 
 /**
- * ServiceBase
+ * Class ServiceBase
  */
 class ServiceBase {
+
 	/**
-	 * Create a Service
-	 * @param  {object} ctx context
-	 * @return {null}
+	 * Create a ServiceBase
+	 * @author jerishi
+	 * @DateTime 2018-05-30
+	 * @param    {Object}   ctx   app ctx
 	 */
 	constructor(ctx) {
 		if (new.target === ServiceBase) {
@@ -26,7 +28,13 @@ class ServiceBase {
 			this[`$${name}Interface`] = item.interface;
 		});
 	}
-
+	
+	/**
+	 * Form response data
+	 * @author jerishi
+	 * @DateTime 2018-05-31
+	 * @borrows utilLib.respond as $respond
+	 */
 	$respond() {
 		return utilLib.respond(...arguments);
 	}

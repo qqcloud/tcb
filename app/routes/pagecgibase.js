@@ -1,13 +1,24 @@
 const CgiBase = require('./cgibase');
 const utilLib = require('../libs/utillib');
-
+/**
+ * Class PageCgiBase
+ * @extends CgiBase
+ */
 class PageCgiBase extends CgiBase {
+
+	/**
+	 * Create a PageCgiBase
+	 * @author jerishi
+	 * @DateTime 2018-05-30
+	 */
 	constructor() {
 		super(...arguments);
 	}
 
 	/**
-	 * handle route of page
+	 * Handle route of page
+	 * @author jerishi
+	 * @DateTime 2018-05-30
 	 */
 	async handle() {
 		const { ctx, next } = this;

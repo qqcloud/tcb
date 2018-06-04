@@ -8,7 +8,11 @@
     "dev": "npm start --env=dev",
     "prd": "npm start --env=prd",
     "test": "npm start --env=test",
-    "jsdoc": "jsdoc -c ./jsdoc.json"
+    "test-ci": "istanbul cover node_modules/mocha/bin/_mocha --report lcovonly -- --require test/support/env --reporter spec --check-leaks --no-exit test/ test/acceptance/",
+    "test-cov": "istanbul cover node_modules/mocha/bin/_mocha -- --require test/support/env --reporter dot --check-leaks --no-exit test/ test/acceptance/",
+    "test-tap": "mocha --require test/support/env --reporter tap --check-leaks --no-exit test/ test/acceptance/",
+    "doc": "jsdoc -c ./jsdoc.json",
+    "doc2md": "jsdoc2md  --template PROJECT.hbs --files ./app/routes/*.js > PROJECT.md"
   },
   "dependencies": {
     "ejs": "^2.5.8",
@@ -29,9 +33,14 @@
     "winston-daily-rotate-file": "^3.1.4"
   },
   "devDependencies": {
+    "chai": "^4.1.2",
+    "chai-as-promised": "^7.1.1",
+    "istanbul": "^0.4.5",
     "jsdoc": "^3.5.5",
-    "nock": "^9.2.6",
+    "jsdoc-to-markdown": "^4.0.1",
     "koa-proxies": "^0.7.0",
+    "mocha": "^5.2.0",
+    "nock": "^9.2.6",
     "nodemon": "^1.17.3"
   }
 }
